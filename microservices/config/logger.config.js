@@ -1,15 +1,28 @@
 const winston = require('winston');
 
+const levels = {
+    error: 0, 
+    warn: 1, 
+    info: 2, 
+    verbose: 3, 
+    debug: 4, 
+    silly: 5
+}
+
 // Logger configuration
 const logConfiguration = {
-    'transports': [
-        // new winston.transports.Console(),
-        new winston.transports.Console({
-            level: 'verbose'
-        }),
+    levels: levels,
+    transports: [
+        new winston.transports.Console(),
+
         new winston.transports.File({
             level: 'info',
             filename: './logs/info.log'
+        }),
+
+        new winston.transports.File({
+            level: 'warn',
+            filename: './logs/warning.log'
         }),
 
         new winston.transports.File({
