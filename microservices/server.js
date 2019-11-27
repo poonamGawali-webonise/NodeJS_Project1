@@ -9,6 +9,9 @@ const swaggerUi = require('swagger-ui-express');
 var dbConfig=require('./config/database.config');
 const swaggerDocument = require('./swagger.json');
 const logger = require('./config/logger.config');
+const loginHandler = require('./middleware/loginVerify.middleware');
+const tokenHandler = require('./middleware/jwtTokenVerify.middleware');
+const verifyTokenMiddleware = require('./middleware/jwtTokenVerify.middleware');
 
 const app = express();
 const router = express.Router();
@@ -25,9 +28,11 @@ mongoose.connect(dbConfig.url,{}).then(()=>{
     logger.info("Connected to database.");
 }).catch();
 
+app.post('/login',loginHandler.login);
+
 var userRoutes = require('./routes/userRoutes');
 app.use('/',router);
-router.use('/',userRoutes);
+router.use('/',verifyTokenMiddleware.checkToken,userRoutes);
 
 
 module.exports=app.listen(3000,function(req,res){
