@@ -3,7 +3,7 @@
     "swagger": "2.0",
     "info": {
       "version": "1.0.0",
-      "title": "NODE_Project Practice",
+      "title": "NODE MONGO CRUD Operatins",
       "description": "Demonstrating how to describe a RESTful API with Swagger"
     },
     "host": "localhost:3000",
@@ -255,10 +255,10 @@
           "password": {
             "type": "string"
           },
-          "firstName": {
+          "firstname": {
             "type": "string"
           },
-          "lastName": {
+          "lastname": {
             "type": "string"
           },
           "email": {

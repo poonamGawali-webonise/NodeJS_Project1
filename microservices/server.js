@@ -13,12 +13,13 @@ const logger = require('./config/logger.config');
 const app = express();
 const router = express.Router();
 
+// Log a message
+logger.info('Welcome to Node application');
+
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
+logger.info('Swagger implemented');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// Log a message
-logger.info('Welcome to application');
 
 mongoose.connect(dbConfig.url,{}).then(()=>{
     logger.info("Connected to database.");
