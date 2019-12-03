@@ -2,23 +2,42 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 var server = require('../server');
 var should = chai.should();
+const faker = require("faker");
+const logger = require('../config/logger.config');
 
 chai.use(chaiHttp);
 
+let payload = {
+  username:faker.internet.userName(),
+  password:faker.internet.password(),
+  firstname:faker.name.firstName(),
+  lastname:faker.name.lastName(),
+  email:faker.internet.email()
+}
 
+let newData = {
+  username:faker.internet.userName(),
+  password:faker.internet.password(),
+  firstname:faker.name.firstName(),
+  lastname:faker.name.lastName(),
+  email:faker.internet.email()
+}
+
+let patchData = {
+  username:faker.internet.userName(),
+  password:faker.internet.password(),
+  firstname:faker.name.firstName(),
+  lastname:faker.name.lastName(),
+  email:faker.internet.email()
+}
 
 describe('Users API Testing', function() {
-
+  logger.info('Testing Chai Mocha Test Cases') 
   it('1. should add a SINGLE user on /users POST', function(done) {
+    logger.info('Chai Mocha Test Case : add a SINGLE user on /users POST')
     chai.request(server)
       .post('/users')
-      .send({
-        "username":"poonam123@",
-        "password":"poonam123#@",
-        "firstname":"Poonam",
-        "lastname":"Gawali",
-        "email":"poonam.gawali@gmail.com"
-      })
+      .send(payload)
       .end(function(err, res){
             res.should.have.status(200);
             res.should.be.json;
@@ -31,6 +50,7 @@ describe('Users API Testing', function() {
   });
 
   it('2. should list ALL users on /users GET', function(done) {
+        logger.info('Chai Mocha Test Case : list ALL users on /users GET')
         chai.request(server)
           .get('/users')
           .end(function(err, res){
@@ -45,6 +65,7 @@ describe('Users API Testing', function() {
   });
 
 it('3. should list single user on /users/:userId GET', function(done) {
+  logger.info('Chai Mocha Test Case : list single user on /user/:userId GET')
   chai.request(server)
     .get('/users')
     .end(function(err, res){
@@ -63,19 +84,14 @@ it('3. should list single user on /users/:userId GET', function(done) {
 });
 
 
-it('4. should update a SINGLE user on /user/<id> PUT', function(done) {
+it('4. should update a SINGLE user on /users/<userId> PUT', function(done) {
+  logger.info('Chai Mocha Test Case : update a user on /users/:userId PUT')
   chai.request(server)
     .get('/users')
     .end(function(err, res){ 
       chai.request(server)
         .put('/users/'+res.body.data[0]._id)
-        .send({
-          "username":"poonam123@",
-          "password":"poonam123#@",
-          "firstname":"Poonam",
-          "lastname":"Pisal",
-          "email":"poonam.pisal@gmail.com"
-        })
+        .send(newData)
         .end(function(error, response){
           response.should.have.status(200);
           response.should.be.json;
@@ -88,22 +104,36 @@ it('4. should update a SINGLE user on /user/<id> PUT', function(done) {
     });
 }); 
 
-it('5. should delete a MULTIPLE user on /user payload["id","id"] DELETE', function(done) {
+it('5. should update a SINGLE user on /users/<userId> PATCH', function(done) {
+  logger.info('Chai Mocha Test Case : update a user on /users/:userId PATCH')
+  chai.request(server)
+    .get('/users')
+    .end(function(err, res){ 
+      chai.request(server)
+        .patch('/users/'+res.body.data[0]._id)
+        .send(patchData)
+        .end(function(error, response){
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('status');
+          response.body.should.have.property('message');
+          response.body.message.should.equal('User updated successfully');
+          done();
+      });
+    });
+}); 
+
+it('6. should delete a MULTIPLE user on /user payload["id","id"] DELETE', function(done) {
+  logger.info('Chai Mocha Test Case : delete a multiple user on /users payload["id","id"] DELETE')
   chai.request(server)
       .post('/users')
-      .send({
-        "username":"santosh123@",
-        "password":"santosh123#@",
-        "firstname":"Santosh",
-        "lastname":"Pisal",
-        "email":"santosh.pisal@gmail.com"
-      })
+      .send(payload)
       .end(function(err, res){
 
       chai.request(server)
       .get('/users')
       .end(function(err, res){
-        
         chai.request(server)
         .delete('/users')
         .send([res.body.data[0]._id,res.body.data[1]._id])
@@ -122,16 +152,11 @@ it('5. should delete a MULTIPLE user on /user payload["id","id"] DELETE', functi
 
 
 
-it('6. should delete a SINGLE user on /users/:<id> DELETE', function(done) {
+it('7. should delete a SINGLE user on /users/:<id> DELETE', function(done) {
+  logger.info('Chai Mocha Test Case : delete a single user on /users/:userId DELETE')
   chai.request(server)
       .post('/users')
-      .send({
-        "username":"amol123@",
-        "password":"amol123#@",
-        "firstname":"Amol",
-        "lastname":"Gawali",
-        "email":"amol.gawali@gmail.com"
-      })
+      .send(newData)
       .end(function(err, res){
 
       chai.request(server)

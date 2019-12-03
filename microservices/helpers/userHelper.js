@@ -1,9 +1,9 @@
-var loginModel = require('../models/user.model');
+var userModel = require('../models/user.model');
 var config = require('../config/database.config');
 
 exports.findAll = () => {
     return new Promise((resolve,reject)=>{
-        loginModel.find().then(data=>{
+        userModel.find().then(data=>{
             resolve(data);
         }).catch(err=>{data
             reject(err);
@@ -13,7 +13,7 @@ exports.findAll = () => {
 
 exports.findOne = (userId) => {
     return new Promise((resolve,reject)=>{
-        loginModel.findById(userId).then(data=>{
+        userModel.findById(userId).then(data=>{
             resolve(data);
         }).catch(err=>{data
             reject(err);
@@ -24,7 +24,7 @@ exports.findOne = (userId) => {
 exports.create = (data) => {
     return new Promise((resolve,reject)=>{
         //Create a User
-        const User = new loginModel(data);
+        const User = new userModel(data);
         //Save User in the database
         User.save().then(data=>{
             resolve(data);
@@ -37,7 +37,17 @@ exports.create = (data) => {
 exports.update = (userId,data) => {
     return new Promise((resolve,reject)=>{
         //Update User in the database
-        loginModel.findByIdAndUpdate(userId,data,{new:true}).then(data=>{
+        userModel.findByIdAndUpdate(userId,data,{new:true}).then(data=>{
+            resolve(data);
+        }).catch(err=>{
+            reject(err);
+        });
+    });
+}
+
+exports.patch = (userId,data) => {
+    return new Promise((resolve,reject)=>{
+        userModel.findByIdAndUpdate(userId,data,{new:true}).then(data=>{
             resolve(data);
         }).catch(err=>{
             reject(err);
@@ -48,7 +58,7 @@ exports.update = (userId,data) => {
 exports.deleteOne = (userId) => {
     return new Promise((resolve,reject)=>{
         //Delete User in the database
-        loginModel.findByIdAndRemove(userId).then(data=>{
+        userModel.findByIdAndRemove(userId).then(data=>{
             resolve(data);
         }).catch(err=>{
             reject(err);
@@ -59,7 +69,7 @@ exports.deleteOne = (userId) => {
 exports.deleteMany = function(userIds){
     return new Promise((resolve,reject)=>{
         //Delete User in the database
-        loginModel.remove({_id:userIds}).then(data=>{
+        userModel.remove({_id:userIds}).then(data=>{
             resolve(data);
         }).catch(err=>{
             reject(err);

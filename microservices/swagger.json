@@ -77,10 +77,7 @@
           "summary": "Get all users in system",
           "responses": {
             "200": {
-              "description": "OK",
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
+              "description": "OK"
             },
             "500": {
               "description": "Some error occurred while creating the User",
@@ -95,15 +92,15 @@
             "tags": [
               "Users"
             ],
-            "summary": "Delete existing users",
-            "description": "Delete existing users",
+            "summary": "Delete multiple existing users",
+            "description": "Delete multiple existing users",
             "parameters": [
               {
                 "name": "User",
                 "in": "body",
                 "description": "User ids that we want to delete",
                 "schema": {
-                  "$ref": "#/definitions/User"
+                  "$ref": "#/definitions/deletePayload"
                 }
               }
             ],
@@ -132,6 +129,54 @@
       
       "/users/{id}": {
         "put": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Update existing user details",
+          "description": "Update existing user details",
+          "parameters": [
+            {
+              "name": "User",
+              "in": "body",
+              "description": "User details that we want to update",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            {
+              "name":"id",
+              "in": "path"
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            },
+            "409": {
+              "description": "Username already exists",
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            },
+            "400": {
+              "description": "User content can not be empty",
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            },
+            "500": {
+              "description": "Error while updating user",
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        },
+
+        "patch": {
           "tags": [
             "Users"
           ],
@@ -266,6 +311,9 @@
           }
         }
       },
+      "deletePayload":[
+        "id1","id2"
+      ],
       "Error": {
         "required": [
           "status",
