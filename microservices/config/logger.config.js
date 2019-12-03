@@ -1,6 +1,6 @@
 const winston = require('winston');
 
-const levels = {
+const levelDetails = {
   error: 0,
   warn: 1,
   info: 2,
@@ -11,7 +11,7 @@ const levels = {
 
 // Logger configuration
 const logConfiguration = {
-  levels: levels,
+  levels: levelDetails,
   transports: [
     new winston.transports.Console(),
 

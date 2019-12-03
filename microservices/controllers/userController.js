@@ -45,9 +45,8 @@ exports.create = (req, res) => {
       logger.info('User added successfully');
       res.status(200).json({ status: 200, message: 'User added successfully', data: userData });
     }).catch((err) => {
-      if (err.code == 11000) {
+      if (err.code === 11000) {
         logger.warn('Username already exist');
-        console.log("Error :",err);
         res.status(409).json({ status: 409, message: 'Username already exist' });
       }
       else {
@@ -71,7 +70,8 @@ exports.update = (req, res) => {
       if (!util.isNullOrUndefined(userData)) {
         logger.info('User updated successfully');
         res.status(200).json({ status: 200, message: 'User updated successfully', data: userData });
-      } else {
+      }
+      else {
         logger.warn('User not found with ID ', req.params.userId);
         res.status(404).json({ status: 404, message: `User not found with ID ${req.params.userId}` });
       }
@@ -81,7 +81,7 @@ exports.update = (req, res) => {
         return res.status(404).send({ status: 404, message: `User not found with ID ${req.params.userId}` });
       }
 
-      if (err.code==11000) {
+      if (err.code === 11000) {
         logger.warn('Username already exist');
         return res.status(409).json({ status: 409, message: 'Username already exist' });
       }
@@ -95,8 +95,8 @@ exports.update = (req, res) => {
   }
 };
 
-exports.patch = (req,res) => {
-  logger.info('Patching existing user with ID ',req.params.userId);
+exports.patch = (req, res) => {
+  logger.info('Patching existing user with ID ', req.params.userId);
   // Validate request
   if (Object.keys(req.body).length > 0) {
     userHelper.patch(req.params.userId, req.body).then((userData) => {
@@ -114,7 +114,7 @@ exports.patch = (req,res) => {
         return res.status(404).send({ status: 404, message: `User not found with ID ${req.params.userId}` });
       }
 
-      if (err.code==11000) {
+      if (err.code === 11000) {
         logger.warn('Username already exist');
         return res.status(409).json({ status: 409, message: 'Username already exist' });
       }
@@ -154,7 +154,7 @@ exports.deleteOne = (req, res) => {
 exports.deleteMany = (req, res) => {
   logger.info('Deleting multiple users');
   userHelper.deleteMany(req.body).then((data) => {
-    if (data.deletedCount != 0) {
+    if (data.deletedCount !== 0) {
       res.status(200).json({ status: 200, message: 'Users deleted successfully' });
     }
     else {
