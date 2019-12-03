@@ -7,15 +7,15 @@ var mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const faker = require('faker');
 
-var dbConfig = require('./config/database.config');
-const swaggerDocument = require('./swagger.json');
-const logger = require('./config/logger.config');
-var userRoutes = require('./routes/userRoutes');
+var dbConfig = require('./microservices/config/database.config');
+const swaggerDocument = require('./microservices/swagger.json');
+const logger = require('./microservices/config/logger.config');
+var userRoutes = require('./microservices/routes/userRoutes');
 
 //  Authentication using jsonwebtoken
-const loginHandler = require('./middleware/loginVerify.middleware');
-const tokenHandler = require('./middleware/jwtTokenVerify.middleware');
-const verifyTokenMiddleware = require('./middleware/jwtTokenVerify.middleware');
+const loginHandler = require('./microservices/middleware/loginVerify.middleware');
+const tokenHandler = require('./microservices/middleware/jwtTokenVerify.middleware');
+const verifyTokenMiddleware = require('./microservices/middleware/jwtTokenVerify.middleware');
 
 const app = express();
 const router = express.Router();

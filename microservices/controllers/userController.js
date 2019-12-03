@@ -47,6 +47,7 @@ exports.create = (req, res) => {
     }).catch((err) => {
       if (err.code == 11000) {
         logger.warn('Username already exist');
+        console.log("Error :",err);
         res.status(409).json({ status: 409, message: 'Username already exist' });
       }
       else {
